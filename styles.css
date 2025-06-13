@@ -1,0 +1,29 @@
+body {
+  text-align: center;
+  background-color: #f0f8ff;
+  width:auto;
+  background-color: black;
+}
+
+h1{
+  color: bisque;
+    font-size: 50px;
+}
+
+#message{
+    color: bisque;
+
+    font-size: 25px;
+}
+
+#box {
+  width: 100px;
+  height: 100px;
+  background-color: red;
+  position: absolute;
+  display: none;
+  cursor: pointer;
+  border-radius: 20px;
+  
+}
+
