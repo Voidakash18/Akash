@@ -1,363 +1,162 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Food Project</title>
+    <title>Weather App</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: "Poppins", sans-serif;
+            background: linear-gradient(135deg, #1f1c2c, #928dab);
+            color: #ffffff;
+        }
 
-    <!-- Google Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+        .container {
+            width: 320px;
+            text-align: center;
+        }
 
-    <!-- Vendor CSS -->
-    <link rel="stylesheet" href="vendors/css/normalize.css">
-    <link rel="stylesheet" href="vendors/css/grid.css">
+        /* Search Box */
+        .search-box {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 15px;
+        }
 
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="resources/css/styles.css">
-    <link rel="stylesheet" href="resources/css/queries.css">
+        .search-box input {
+            padding: 10px;
+            border: none;
+            outline: none;
+            border-radius: 20px 0 0 20px;
+            width: 180px;
+            font-size: 14px;
+            background: rgba(255, 255, 255, 0.9);
+            color: #333;
+        }
 
-    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+        .search-box button {
+            padding: 10px 15px;
+            border: none;
+            outline: none;
+            background: #764ba2;
+            color: white;
+            border-radius: 0 20px 20px 0;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.3s ease;
+        }
 
-    <!-- Icons -->
-    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+        .search-box button:hover {
+            background: #5b3780;
+        }
+
+        /* Weather Card */
+        .card {
+            background: rgba(30, 30, 60, 0.7);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            height: 400px;
+        }
+
+        .card h2 {
+            font-size: 1.4rem;
+            margin: 10px 0;
+        }
+
+        .card h6 {
+            font-size: 1rem;
+            text-transform: capitalize;
+            margin: 5px 0;
+            color: #e0e0e0;
+        }
+
+        .card h4 {
+            font-size: 2.8rem;
+            margin: 15px 0;
+            font-weight: 500;
+            color: #ffffff;
+        }
+
+        img#icon {
+            width: 80px;
+            height: 80px;
+            margin: 15px 0;
+        }
+
+        /* Reload Button */
+        button.refresh {
+            display: block;
+            margin: 20px auto 0;
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(145deg, #667eea, #764ba2);
+            border: none;
+            border-radius: 50%;
+            color: #fff;
+            font-size: 1.6rem;
+            cursor: pointer;
+            box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3),
+                        -5px -5px 15px rgba(255, 255, 255, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        button.refresh:hover {
+            transform: scale(1.1);
+            background: linear-gradient(145deg, #764ba2, #667eea);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
+        }
+    </style>
 </head>
 <body>
-
-    <!-- HEADER -->
-    <header>
-        <nav class="main-nav-wrapper">
-            <div class="row nav-inner">
-                <a href="#" class="logo-link">
-                    <img class="logo" src="resources/img/ologo-removebg-preview.png" alt="Omnifood logo">
-                </a>
-                <ul class="main-nav">
-                    <li><a href="#delivery">Food Delivery</a></li>
-                    <li><a href="#howit">How it works</a></li>
-                    <li><a href="#cities">Our cities</a></li>
-                    <li><a href="#signup">Sign-up</a></li>
-                </ul>
-            </div>
-        </nav>
-
-        <div class="hero-text-box">
-            <h1>Goodbye Junk Food<br>Hello Super Healthy Food</h1>
-            <a class="btn btn-full" href="#plans">I'm Hungry</a>
-            <a class="btn btn-ghost" href="#how">Show me more</a>
-        </div>
-    </header>
-
-    <!-- FEATURES -->
-    <section class="section-features" id="how" data-aos="fade-in" data-aos-duration="4000">
-        <div class="row">
-            <h2>Get food fast &mdash; Not fast food</h2>
-            <p class="long-copy">
-                Hello, we’re Omnifood, your new premium food delivery service. We know you’re
-                always busy. No time for cooking. So let us take care of that; we’re really good at it,
-                promise!
-            </p>
+    <div class="container">
+        <!-- Search Input -->
+        <div class="search-box">
+            <input type="text" id="cityInput" placeholder="Enter city name">
+            <button onclick="getWeather()"><i class="fa fa-search"></i></button>
         </div>
 
-        <div class="row feature-grid">
-            <div class="col span_1_of_4 span-1-of-4 box">
-                <ion-icon class="icon-big" name="infinite-outline" aria-hidden="true"></ion-icon>
-                <h3>Up to 365 days/year</h3>
-                <p>Never cook again! Our subscription plans include up to 365 days/year coverage. You can also order flexibly.</p>
-            </div>
-            <div class="col span_1_of_4 span-1-of-4 box">
-                <ion-icon class="icon-big" name="stopwatch-outline" aria-hidden="true"></ion-icon>
-                <h3>Ready in 20 minutes</h3>
-                <p>Only twenty minutes away from delicious, healthy meals delivered right to your door.</p>
-            </div>
-            <div class="col span_1_of_4 span-1-of-4 box">
-                <ion-icon class="icon-big" name="fast-food-outline" aria-hidden="true"></ion-icon>
-                <h3>100% organic</h3>
-                <p>Fresh, organic, local ingredients. No added hormones or antibiotics. Better taste, better health.</p>
-            </div>
-            <div class="col span_1_of_4 span-1-of-4 box">
-                <ion-icon class="icon-big" name="cart-outline" aria-hidden="true"></ion-icon>
-                <h3>Order anything</h3>
-                <p>Pick from 100+ meals or create your own combination. Total flexibility for your cravings.</p>
-            </div>
+        <!-- Weather Card -->
+        <div class="card">
+            <h2><i class="fa fa-map-marker"></i> <span id="location"></span></h2>
+            <h6 id="weather"></h6>
+            <h4><span id="temp"></span><sup>°</sup>C</h4>
+            <img src="" id="icon">
+            <button onclick="window.location.reload()" class="refresh"><i class="fa fa-refresh"></i></button>
         </div>
-    </section>
+    </div>
 
-    <!-- MEALS SHOWCASE -->
-    <section class="section-meals" id="delivery" data-aos="fade-in" data-aos-duration="4000">
-        <ul class="meals-showcase" id="delivery">
-            <li><figure class="meal-photo"><img src="resources/img/f1.webp" alt="Meal 1"></figure></li>
-            <li><figure class="meal-photo"><img src="resources/img/f2.webp" alt="Meal 2"></figure></li>
-            <li><figure class="meal-photo"><img src="resources/img/f3.webp" alt="Meal 3"></figure></li>
-            <li><figure class="meal-photo"><img src="resources/img/f4.webp" alt="Meal 4"></figure></li>
-            <li><figure class="meal-photo"><img src="resources/img/f5.webp" alt="Meal 5"></figure></li>
-            <li><figure class="meal-photo"><img src="resources/img/f6.webp" alt="Meal 6"></figure></li>
-            <li><figure class="meal-photo"><img src="resources/img/f7.webp" alt="Meal 7"></figure></li>
-            <li><figure class="meal-photo"><img src="resources/img/f8.webp" alt="Meal 8"></figure></li>
-        </ul>
-    </section>
+    <script>
+        function getWeather() {
+            const city = document.getElementById('cityInput').value || "Mumbai";
+            const apiKey = "7eab817d912539a1077384e0bdc13b54";
+            const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}`;
 
-    <!-- HOW IT WORKS -->
-    <section class="section-steps" id="howit" data-aos="fade-in" data-aos-duration="4000">
-        <div class="row">
-            <h2>How it works &mdash; Simple as 1, 2, 3</h2>
-        </div>
+            fetch(url)
+                .then(response => response.json())
+                .then(obj => {
+                    if (obj.cod === 200) {
+                        document.getElementById('weather').innerHTML = obj.weather[0].description;
+                        document.getElementById('location').innerHTML = obj.name;
+                        document.getElementById('temp').innerHTML = (obj.main.temp - 273.15).toFixed(1);
+                        document.getElementById('icon').src = `https://openweathermap.org/img/w/${obj.weather[0].icon}.png`;
+                    } else {
+                        alert("City not found!");
+                    }
+                })
+                .catch(error => console.log("Error: ", error));
+        }
 
-        <div class="row steps-flex">
-            <div data-aos="slide-left" data-aos-duration="1000" class="col span_1_of_2 span-1-of-2 steps-box">
-                <img src="resources/img/mobile w.png" alt="Omnifood mobile app screenshot" class="app-screen">
-            </div>
-
-            <div class="col span_1_of_2 span-1-of-2 steps-box">
-                <div class="works-step">
-                    <div>1</div>
-                    <p>Choose the plan that fits your needs and sign up today.</p>
-                </div>
-                <div class="works-step">
-                    <div>2</div>
-                    <p>Pay for the plan and download the app.</p>
-                </div>
-                <div class="works-step">
-                    <div>3</div>
-                    <p>You’re done! Start ordering instantly.</p>
-                </div>
-                <div class="store-buttons">
-                    <a href="#" class="btn-app" aria-label="Google Play">
-                        <img src="resources/img/Google-Play-Logo-PNG-Image.png" alt="Google Play Store">
-                    </a>
-                    <a href="#" class="btn-app" aria-label="App Store">
-                        <img src="resources/img/appstore.webp" alt="Apple App Store">
-                    </a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- CITIES -->
-    <section class="section-cities" id="cities" data-aos="fade-in" data-aos-duration="4000">
-        <div class="row">
-            <h2>We're currently in these cities</h2>
-        </div>
-        <div class="row cities-grid">
-            <div class="col span-1-of-4 box city-box">
-                <img src="resources/img/mumbai.webp" alt="Mumbai skyline">
-                <h3>Mumbai</h3>
-                <div class="city-feature"><ion-icon class="icon-small" name="person-circle-outline"></ion-icon>1600+ Happy Eaters</div>
-                <div class="city-feature"><ion-icon class="icon-small" name="star-sharp"></ion-icon>50+ Chefs</div>
-                <div class="city-feature"><ion-icon class="icon-small" name="logo-twitter"></ion-icon><a href="#">@omnifood_mumbai</a></div>
-            </div>
-
-            <div class="col span-1-of-4 box city-box">
-                <img src="resources/img/banglore.webp" alt="Bangalore city view">
-                <h3>Bangalore</h3>
-                <div class="city-feature"><ion-icon class="icon-small" name="person-circle-outline"></ion-icon>600+ Happy Eaters</div>
-                <div class="city-feature"><ion-icon class="icon-small" name="star-sharp"></ion-icon>20+ Chefs</div>
-                <div class="city-feature"><ion-icon class="icon-small" name="logo-twitter"></ion-icon><a href="#">@omnifood_bangalore</a></div>
-            </div>
-
-            <div class="col span-1-of-4 box city-box">
-                <img src="resources/img/chennai.webp" alt="Chennai marina">
-                <h3>Chennai</h3>
-                <div class="city-feature"><ion-icon class="icon-small" name="person-circle-outline"></ion-icon>2000+ Happy Eaters</div>
-                <div class="city-feature"><ion-icon class="icon-small" name="star-sharp"></ion-icon>100+ Chefs</div>
-                <div class="city-feature"><ion-icon class="icon-small" name="logo-twitter"></ion-icon><a href="#">@omnifood_chennai</a></div>
-            </div>
-
-            
-
-          
-        </div>
-    </section>
-
-    <!-- TESTIMONIALS -->
-    <section class="section-testimonials" data-aos="fade-in" data-aos-duration="4000">
-        <div class="row">
-            <h2>Our customers can't live without us</h2>
-        </div>
-        <div class="row testimonials-grid">
-            <div class="col span-1-of-3 box testimonial">
-                <blockquote>
-                    Omnifood is just awesome! I launched a startup and have no time for cooking—
-                    Omnifood saves my day. Now I can’t live without it!
-                    <cite><img src="resources/img/alcaraz.webp" alt="Customer Alcaraz Sao">Alcaraz Sao</cite>
-                </blockquote>
-            </div>
-
-            <div class="col span-1-of-3 box testimonial">
-                <blockquote>
-                    Perfect for my schedule. Healthy, fast, and tasty meals every single day. Highly
-                    recommended to busy professionals!
-                    <cite><img src="resources/img/sinner.webp" alt="Customer Janic Sinner">Janic Sinner</cite>
-                </blockquote>
-            </div>
-
-            <div class="col span-1-of-3 box testimonial">
-                <blockquote>
-                    I tried many services—this is the best. Always fresh, always on time. I love the variety
-                    and quality.
-                    <cite><img src="resources/img/kevin.webp" alt="Customer Genelia Klark">Genelia Klark</cite>
-                </blockquote>
-            </div>
-        </div>
-    </section>
-
-    <!-- PLANS -->
-    <section class="section-plans" id="plans" data-aos="fade-in" data-aos-duration="4000">
-        <div class="row">
-            <h2>Start eating healthy today</h2>
-        </div>
-
-        <div class="row plans-grid">
-            <div class="col span-1-of-3">
-                <div class="plan-box" data-aos="zoom-in" data-aos-duration="4000">
-                    <h3>Premium</h3>
-                    <p class="plan-price">$399 <span>/ month</span></p>
-                    <p class="plan-price-meal">That's only $13.90 per meal</p>
-                    <ul class="plan-features">
-                        <li><ion-icon class="icon-small" name="checkmark-outline"></ion-icon>10 meals everyday</li>
-                        <li><ion-icon class="icon-small" name="checkmark-outline"></ion-icon>Order 24×7</li>
-                        <li><ion-icon class="icon-small" name="checkmark-outline"></ion-icon>Newest creations</li>
-                        <li><ion-icon class="icon-small" name="checkmark-outline"></ion-icon>Free delivery</li>
-                    </ul>
-                    <a href="#signup" class="btn btn-full">Sign up</a>
-                </div>
-            </div>
-
-            <div class="col span-1-of-3">
-                <div class="plan-box">
-                    <h3>Pro</h3>
-                    <p class="plan-price">$199 <span>/ month</span></p>
-                    <p class="plan-price-meal">That's only $9.90 per meal</p>
-                    <ul class="plan-features">
-                        <li><ion-icon class="icon-small" name="checkmark-outline"></ion-icon>3 meals everyday</li>
-                        <li><ion-icon class="icon-small" name="checkmark-outline"></ion-icon>Order 24×7</li>
-                        <li><ion-icon class="icon-small" name="checkmark-outline"></ion-icon>Newest creations</li>
-                        <li><ion-icon class="icon-small" name="checkmark-outline"></ion-icon>Free delivery</li>
-                    </ul>
-                    <a href="#signup" class="btn btn-ghost">Sign up</a>
-                </div>
-            </div>
-
-            <div class="col span-1-of-3">
-                <div class="plan-box">
-                    <h3>Starter</h3>
-                    <p class="plan-price">$99 <span>/ meal</span></p>
-                    <p class="plan-price-meal">&nbsp;</p>
-                    <ul class="plan-features">
-                        <li><ion-icon class="icon-small" name="checkmark-outline"></ion-icon>1 meal / month</li>
-                        <li><ion-icon class="icon-small" name="checkmark-outline"></ion-icon>Order 24×7</li>
-                        <li><ion-icon class="icon-small" name="close-outline"></ion-icon>—</li>
-                        <li><ion-icon class="icon-small" name="checkmark-outline"></ion-icon>Free delivery</li>
-                    </ul>
-                    <a href="#signup" class="btn btn-ghost">Sign up</a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- CONTACT FORM -->
-    <section class="section-form" id="signup" data-aos="fade-in" data-aos-duration="4000">
-        <div class="row">
-            <h2>We're happy to hear from you</h2>
-        </div>
-
-        <div class="row">
-            <form action="#" method="POST" class="contact-form" novalidate>
-                <div class="row form-row">
-                    <div class="col span-1-of-3"><label for="name">Name</label></div>
-                    <div class="col span-2-of-3">
-                        <input type="text" name="name" id="name" placeholder="Your name" required>
-                    </div>
-                </div>
-
-                <div class="row form-row">
-                    <div class="col span-1-of-3"><label for="email">Email</label></div>
-                    <div class="col span-2-of-3">
-                        <input type="email" name="email" id="email" placeholder="Your email" required>
-                    </div>
-                </div>
-
-                <div class="row form-row">
-                    <div class="col span-1-of-3"><label for="find-us">How did you find us?</label></div>
-                    <div class="col span-2-of-3">
-                        <select name="find-us" id="find-us">
-                            <option value="friends">Friends</option>
-                            <option value="search">Search engine</option>
-                            <option value="ad">Advertisement</option>
-                            <option value="other">Other</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="row form-row">
-                    <div class="col span-1-of-3"><label for="message">Drop a line</label></div>
-                    <div class="col span-2-of-3">
-                        <textarea name="message" id="message" placeholder="Your message"></textarea>
-                    </div>
-                </div>
-
-                <div class="row form-row">
-                    <div class="col span-1-of-3"><label>&nbsp;</label></div>
-                    <div class="col span-2-of-3">
-                        <input type="submit" value="Submit" class="btn-submit">
-                    </div>
-                </div>
-            </form>
-        </div>
-    </section>
-
-    <!-- FOOTER -->
-    <footer>
-        <div class="row footer-flex" data-aos="fade-in" data-aos-duration="4000">
-            <ul class="footer-nav">
-                <li><a href="#delivery">About us</a></li>
-                <li><a href="#how">Blog</a></li>
-                <li><a href="#plans">Press</a></li>
-                <li><a href="#signup">iOS App</a></li>
-                <li><a href="#signup">Android App</a></li>
-            </ul>
-            <ul class="social-links">
-                <li><ion-icon class="fb" name="logo-facebook" aria-label="Facebook"></ion-icon></li>
-                <li><ion-icon class="twitter" name="logo-twitter" aria-label="Twitter"></ion-icon></li>
-                <li><ion-icon class="google" name="logo-google" aria-label="Google"></ion-icon></li>
-                <li><ion-icon class="insta" name="logo-instagram" aria-label="Instagram"></ion-icon></li>
-            </ul>
-        </div>
-        <div class="row">
-            <p>&copy; 2015–2025 Omnifood. All rights reserved.</p>
-        </div>
-    </footer>
-
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-<script src="https://unpkg.com/aos@next/dist/aos.js"></script>
-  <script>
-    AOS.init();
-  </script>
-<script>
-$(document).ready(function(){
-  // Add smooth scrolling to all links
-  $("a").on('click', function(event) {
-
-    // Make sure this.hash has a value before overriding default behavior
-    if (this.hash !== "") {
-      // Prevent default anchor click behavior
-      event.preventDefault();
-
-      // Store hash
-      var hash = this.hash;
-
-      // Using jQuery's animate() method to add smooth page scroll
-      // The optional number (800) specifies the number of milliseconds it takes to scroll to the specified area
-      $('html, body').animate({
-        scrollTop: $(hash).offset().top
-      }, 800, function(){
-
-        // Add hash (#) to URL when done scrolling (default click behavior)
-        window.location.hash = hash;
-      });
-    } // End if
-  });
-});
-</script>
-
+        // Load default city weather (Mumbai) on page load
+        window.onload = getWeather;
+    </script>
 </body>
 </html>
